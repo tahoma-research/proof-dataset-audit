@@ -1,0 +1,2 @@
+# SYNTHETIC: a proof element that ends its own tactic block with `section` and then declares a local `Add ℕ` instance, the same addition under another name, so that in a module shared with later declarations every later `+` on ℕ elaborates through it: their types change and their proofs still check. No proof element of the pinned release declares a `local instance`. The next line is the record.
+{"formal_statement":"theorem synthetic_scope_leak : (2 : ℕ) + 2 = 4  :=  by sorry","split":"lean_workbook","proof":["norm_num\nsection\nlocal instance : Add ℕ := ⟨Nat.add⟩"]}

@@ -1,0 +1,2 @@
+# source: lean_workbook.json at revision 2e066e310b2c6d2c27616927ae131f82901c8f1c (sha256 577430f83caf094f1d9b99c9a3d18d92130fa21e74939d1b528b39c1927a7b0c), record at position 94751 (0-based), re-serialised from that record of the pinned file as compact JSON (key order kept); the next line is it
+{"natural_language_statement":"Solve the first inequality: $x > 1$","answer":"","tags":null,"formal_statement":"theorem lean_workbook_plus_37430 : x > 1   :=  by sorry","split":"lean_workbook_plus","proof":[]}

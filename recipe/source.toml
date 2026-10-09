@@ -1,0 +1,23 @@
+schema = "source/1"
+name = "Lean Workbook"
+repo = "internlm/Lean-Workbook"                      # Hugging Face dataset
+revision = "2e066e310b2c6d2c27616927ae131f82901c8f1c" # 40 hex; ingest refuses anything else
+file = "lean_workbook.json"
+url = "https://huggingface.co/datasets/internlm/Lean-Workbook/resolve/2e066e310b2c6d2c27616927ae131f82901c8f1c/lean_workbook.json"
+bytes = 94484955
+sha256 = "577430f83caf094f1d9b99c9a3d18d92130fa21e74939d1b528b39c1927a7b0c"
+record_unit = "entry-proof pair"
+card_split_counts = { lean_workbook = 57231 }  # the split counts as the dataset card states them
+
+[licence]                       # traced by hand from the dataset card, recorded verbatim
+spdx = "Apache-2.0"
+stated_at = "https://huggingface.co/datasets/internlm/Lean-Workbook"
+verbatim = "license: apache-2.0"
+traced_on = "2026-10-02"
+status = "declared-on-card"     # the licence as the card declares it, never "cleared"
+
+[declared]                      # the publisher's declared environment, verbatim
+lean = "leanprover/lean4:v4.8.0-rc1"
+mathlib = "v4.8.0-rc1"
+stated_at = "https://huggingface.co/datasets/internlm/Lean-Workbook"
+verbatim = "Our test environment is based on Lean v4.8.0-rc1 with Mathlib4 of the same version (which can be cloned by specifying the tag v4.8.0-rc1)."

@@ -1,0 +1,58 @@
+# Finding report: Lean Workbook at revision `{revision}`
+
+This report is a named output of {public_name}'s publication. It records, factually and without commentary, every
+sampled pair of the Lean Workbook dataset (`{repo}` at revision `{revision}`) that did not reproduce when re-checked at
+the pin, `{pin_lean}` with Mathlib `{pin_mathlib}`{finding_declared}. The method, the rates and their denominators are
+in the repository's README.
+
+{unreplayed}
+
+The dataset's authors receive this report before it is published, with a response window of {window} days. The notice
+is a courtesy, not a request for consent. Their response is published beside this report, under `responses/`, whenever
+it arrives, including after publication.
+
+Each pair below carries the command that reproduces it from a clone of this repository{trial}; its first run costs
+{build_kind}, {build_figure}.
+{full_run}
+
+## About the mathematics
+
+{mathematics}
+
+## About the environment
+
+These pairs did not check at the pin. `environment-mismatch`: the pair does not check at the pin and does check at the
+declared revision, so the method attributes it to the difference between the pin and the declared revision.
+`environment-undeclared`: no comparison with the declared revision exists, because {undeclared}, so no cause is
+attributed.
+Both are facts about a dataset and a pair of environments; neither enters any rate about the mathematics, and neither
+says anything about how the entry was written.
+
+### `environment-mismatch`
+
+{environment-mismatch}
+
+### `environment-undeclared`
+
+{environment-undeclared}
+
+## Not resolved
+
+`timed-out`, `resource-exhausted`, `harness-error` and `unclassified` say nothing about the content of a pair; each is
+counted beside the rates and never inside them. An `unclassified` pair's raw diagnostic is in its record.
+
+### `timed-out`
+
+{timed-out}
+
+### `resource-exhausted`
+
+{resource-exhausted}
+
+### `harness-error`
+
+{harness-error}
+
+### `unclassified`
+
+{unclassified}

@@ -1,0 +1,3 @@
+# source: lean_workbook.json at revision 2e066e310b2c6d2c27616927ae131f82901c8f1c (sha256 577430f83caf094f1d9b99c9a3d18d92130fa21e74939d1b528b39c1927a7b0c), record at position 146 (0-based), re-serialised from that record of the pinned file as compact JSON (key order kept); the next line is it
+{"natural_language_statement":"$\\cos 3x = \\cos(2x+x) = \\cos 2x\\cos x-\\sin 2x \\sin x$","answer":"","tags":["trigonometry"],"formal_statement":"theorem lean_workbook_146 : ∀ x : ℝ, cos (3 * x) = cos (2 * x + x)  :=  by sorry","split":"lean_workbook","proof":["intro x\nring_nf"]}
+# pair_sha256 lean_workbook_146__p0 sha256:4e26569e3d552f4392cb6462243e28894eb937b97f9ff128abdf17699d52dc44

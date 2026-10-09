@@ -1,0 +1,226 @@
+# The alternative blocks of README.md.tmpl and FINDING_REPORT.md.tmpl, chosen by the snapshot's framing, its
+# status and what it recorded. Names in braces are figures from results/summary.json; no figure is written here.
+
+skew_labels = ["reproduces at both revisions", "reproduces at the pin only",
+               "reproduces at the declared revision only", "fails at both", "undecided at the declared revision"]
+skew = """**Skew table.** Every pair with a result at the pin, by its outcome there and at the declared revision. A pair \
+accepted and audit-clean at the pin is `reproduced` whatever its declared outcome; a pair whose declared check gave \
+no result is undecided there, never a failure.
+
+{skew_table}
+
+Pairs not in the table, for want of a result at the pin or of a check at the declared revision: {skew_left_out}."""
+
+[lead]
+standing = """An evaluation-integrity check of a published proof corpus, and of how it reproduces across Lean versions. \
+{publisher} re-checked {pairs} entry-proof pairs, drawn with the published seed {seed} from {distinct_entries} \
+distinct entries of the Lean Workbook dataset (`{repo}` at revision `{revision}`), in a pinned environment {built}, \
+`{pin_lean}` with Mathlib `{pin_mathlib}`, and compiled and axiom-audited each pair a second time at the \
+revision the publisher declared, `{legacy_lean}` with Mathlib `{legacy_mathlib}`: compilation plus the axiom audit \
+only."""
+unavailable = """An evaluation-integrity check of a published proof corpus, and of how it reproduces across Lean \
+versions. {publisher} re-checked {pairs} entry-proof pairs, drawn with the published seed {seed} from \
+{distinct_entries} distinct entries of the Lean Workbook dataset (`{repo}` at revision `{revision}`), in a pinned \
+environment {built}, `{pin_lean}` with Mathlib `{pin_mathlib}`. The revision the publisher declared, \
+`{legacy_lean}` with Mathlib `{legacy_mathlib}`, could not be built within its budget, so there is no second \
+environment, and the one statement about the mathematics is a replay rejection by the pin's own kernel."""
+
+[verified]
+available = """A pair counts as verified only when it compiled from source, passed its own kernel replay and the \
+axiom audit, and then passed one `leanchecker --fresh` replay of the whole environment."""
+unavailable = """The whole-environment `leanchecker --fresh` replay did not run for this snapshot, and no result \
+here rests on it; no pair is called verified."""
+
+[built]
+from-source = "built from source"
+cache-seeded = "built over dependency layers seeded from the upstream cache, its audited statements from source"
+
+[build_kind]
+from-source = "a full from-source Mathlib build"
+cache-seeded = "a Mathlib build over dependency layers seeded from the upstream cache"
+
+[pin_cache]
+from-source = "every Lake call there passes `--no-cache`, and Mathlib's own download on update is switched off"
+cache-seeded = """under the stop-loss it seeded only Mathlib's dependency layers there, and every statement under \
+audit was built from source"""
+
+[aggregate]
+available = """The pairs that pass are concatenated under one header into an aggregate module, which `leanchecker \
+--fresh` replays once from a clean environment."""
+unavailable = """The whole-environment replay, in which `leanchecker --fresh` checks the pairs that pass, concatenated \
+into one aggregate module, from a clean environment, did not run for this snapshot."""
+
+[decided]  # the check that decided a pair's class, by its override's source, beside its command or in its place
+d44 = "the whole-environment replay, which re-checks every passing pair together in one module, rejected it"
+d14-pilot = """In the first of two trial runs before the full run, which replayed the first sampled pairs that passed \
+together in one module, that replay rejected it; no command re-creates that trial: the pair's own line in \
+`results/records.jsonl` records the rejection, its constant and its date, and the trial is on its dated `d14-outcome` \
+line in `gates/GATES.md`"""
+d21-pilot = """In the second of two trial runs before the full run, which replayed the first sampled pairs that passed \
+together in one module, that replay rejected it; no command re-creates that trial: the pair's own line in \
+`results/records.jsonl` records the rejection, its constant and its date, and the trial is on its dated `d21-pilot` \
+line in `gates/GATES.md`"""
+crosspass-d44 = """checked together with the other passing pairs in one module, it gave a different result from its \
+own check, a harness failure"""
+crosspass-d21 = """In the second of two trial runs before the full run, checked together with the other passing pairs \
+in one module, it gave a different result from its own check, a harness failure; no command re-creates that trial: \
+the pair's own line in `results/records.jsonl` records the disagreement and its date, and the trial is on its dated \
+`d21-pilot` line in `gates/GATES.md`"""
+aggregate-elab = "it failed to compile together with the other passing pairs in one module, a harness failure"
+d21-rehearsal = """its check at the pin gave different outcomes in the two trial runs before the full run, a harness \
+failure; running this command twice and comparing the outcomes is what reproduces the disagreement"""
+
+[full_run]
+available = """Where a check of many pairs together decided a pair's class, the command is the full `run`: it builds \
+the pinned environment, checks every sampled pair there, builds the passing pairs together into one module and \
+replays that module; the check is named beside the command{run_legacy}."""
+unavailable = """Where a check of many pairs together decided a pair's class, the command is the full `run`: it \
+builds the pinned environment, checks every sampled pair there and builds the passing pairs together into one \
+module, which this snapshot does not replay; the check is named beside the command{run_legacy}."""
+declared = """. It also builds the declared environment and compiles and axiom-audits every sampled pair there; \
+{cost}. Because it checks every sampled pair, the full run costs far more than its builds alone"""
+
+[legacy_cost]
+measured = "its build took {hours} hours here and needs {gb} GB of disk"
+pending = "it needs {gb} GB of disk, and no build time is recorded"
+
+[budgets]
+durable_gb = "durable outputs"
+pin_env_gb = "the pinned environment"
+legacy_env_gb = "the declared environment"
+rebuild_gb = "the from-scratch rebuild"
+
+[build_figure]
+measured = "measured here at {pin_hours} hours"
+pending = "expected to take hours"
+
+[headline]
+standard = """**Result.** The mathematical non-reproduction rate, the share of counted pairs that fall in a \
+mathematics class, is {pair_percent}: {pair_numerator} of {pair_denominator} pairs. At the entry level it is \
+{entry_percent}: {entry_numerator} of {entry_denominator} counted entries have no sampled pair that reproduced. Both \
+cover this seeded sample, never the whole corpus, and are set out with their denominators under [Results](#results)."""
+skew = """**Result: the skew table and the method.** Version skew between the pin and the declared revision \
+dominates this sample, so what this snapshot publishes is the skew table under [Results](#results), how many pairs \
+reproduce at both revisions, at the pin only, at the declared revision only, at neither, or are undecided at the \
+declared revision, with what the declared environment cost and the complete method that produced it, reusable on \
+the next dataset. The rates are set out beside the table, never ahead of it."""
+pin-only = """**Result: the pin-only table and the method.** Every sampled pair's outcome at the pin, the declared \
+environment's attempts and costs, and the complete method. A pair that fails at the pin is recorded \
+`environment-undeclared`, never as rejected mathematics; a pair the pin's kernel rejects on replay is reported under \
+its own heading. The rates under [Results](#results) are the pin's failure rates, the share of pairs and of entries \
+that fail at the pin, with no check at the declared revision behind them."""
+
+[rates]
+classes = """**Mathematical non-reproduction rates.** Each counts the pairs, or the entries, in `rejected-by-checker`, \
+`axiom-audit-failure` and `rejected-by-replay`, over all those checked less the ones in `timed-out`, \
+`resource-exhausted`, `harness-error`, `unclassified`, `environment-undeclared` and `environment-mismatch`, which are \
+counted above and never folded into either rate.
+
+- Pair level: {pair_numerator} of {pair_denominator} pairs, {pair_percent}; {pair_interval}.
+- Entry level: {entry_numerator} of {entry_denominator} entries, {entry_percent}. An entry reproduces if at least one \
+of its sampled pairs does. The rate is computed over the pairs drawn, not over every proof the entry carries, so it \
+understates how often an entry has some surviving proof. No interval is quoted for it."""
+pin-only = """**The pin's failure rates, with no check at the declared revision behind them.** Neither is a rate about \
+the mathematics. A pair counts when its pin leg reached a result (no harness failure, timeout, resource exhaustion or \
+unclassified outcome); it fails when the pin rejected it at elaboration, in the kernel, at the axiom audit or on \
+replay.
+
+- Pair level: {pair_numerator} of {pair_denominator} pin-countable pairs fail at the pin, {pair_percent}; \
+{pair_interval}.
+- Entry level: {entry_numerator} of {entry_denominator} pin-countable entries fail at the pin, {entry_percent}. An \
+entry counts when one of its pairs does, and fails when none of its counted pairs was accepted. The rate is computed \
+over the pairs drawn, not over every proof the entry carries. No interval is quoted for it."""
+
+[shortlist]
+computable = """**Kernel-rejection shortlist.** The count of `environment-mismatch` pairs that failed at the pin by a \
+kernel rejection rather than an elaboration failure is {subcount}: a shortlist of candidates for later cross-kernel \
+checking, neither a finding nor a bound. Whether the kernel soundness bugs fixed in Lean {floor} existed at the \
+declared toolchain is not established. A pair accepted and audit-clean at the pin cannot have passed only through \
+one of them. The count of sampled pairs that can have passed their publisher's check only through one is at most \
+{bound}: the `environment-mismatch` pairs, the `environment-undeclared` pairs, all of which fail at the pin, and the \
+`rejected-by-replay` pairs whose check at the declared revision compiled and audited clean."""
+not-computable = """**Kernel-rejection shortlist.** With no result at the declared revision, the shortlist is not \
+computable on this branch, which is not the same as zero. Whether the kernel soundness bugs fixed in Lean {floor} \
+existed at the declared toolchain is not established. A pair accepted and audit-clean at the pin cannot have passed \
+only through one of them. The count of sampled pairs that can have is at most {bound}: every pair that fails at the \
+pin, a replay rejection included."""
+
+[declared]
+standing = """The check at the declared revision is compilation plus the axiom audit only: that toolchain predates \
+`leanchecker`, so it is a cross-check for version skew, and no result rests on it alone. The declared environment's \
+build attempts, each with its wall-clock: {attempts}. The upstream binary cache is treated differently at the pin and \
+at the declared revision, deliberately. At the pin it never stands in for building the statements under audit, \
+because downloaded build outputs are the publisher's own binaries and would turn the check into a repetition of the \
+publisher's claim; {pin_cache}. At the declared revision the cache is permitted, because that side only cross-checks \
+version skew and nothing is concluded from it alone."""
+unavailable = """The declared environment, `{legacy_lean}` with Mathlib `{legacy_mathlib}`, was abandoned under its \
+budget: {attempts}. Every pair that fails at the pin or at the axiom audit, a replay rejection apart, is therefore \
+recorded `environment-undeclared` with its pin-side diagnostic, and every audit-clean accepted pair `reproduced`."""
+
+[mathematics]
+standing = """These pairs fail in a way the method attributes to the proof itself. `rejected-by-checker`: it fails to \
+compile, or the kernel rejects it, at the pin and at the declared revision. `axiom-audit-failure`: it depends on an \
+axiom outside the allowlist, or on `sorryAx`. `rejected-by-replay`: it compiled, and a kernel replay then rejected \
+its declaration; a proof the pin's kernel rejects on replay does not check whatever the revision, and the declared \
+toolchain has no checker that could contradict it.
+
+### `rejected-by-checker`
+
+{rejected-by-checker}
+
+### `axiom-audit-failure`
+
+{axiom-audit-failure}
+
+### `rejected-by-replay`
+
+{rejected-by-replay}"""
+pin-only = """With no declared revision to compare against, the one statement about the mathematics is a replay \
+rejection by the pin's own kernel: a pair that compiled at the pin and that the pin's kernel then rejected on replay, \
+which does not check whatever the revision.
+
+### `rejected-by-replay`
+
+{rejected-by-replay}"""
+
+[finding_declared]
+standing = ", and compiled and axiom-audited at the revision the publisher declared, `{legacy_lean}` with Mathlib `{legacy_mathlib}`"
+unavailable = "; the revision the publisher declared could not be built, so no comparison with it exists"
+
+[undeclared]
+standing = "the check at the declared revision gave no result for the pair"
+unavailable = "the declared environment could not be built"
+
+[conditions]
+stop_loss = """**Cache-seeded limitation.** The from-source Mathlib build did not complete within its budget, so the \
+pinned environment's dependency layers were seeded from the upstream build cache while the statements under audit \
+were still built from source. Every record carries `provenance: cache-seeded`, and every result here rests on \
+dependency layers this project did not compile."""
+divergent = """**Environment rebuild.** Rebuilt from scratch, the artifact set did not reproduce byte for byte while \
+the outcomes did: the pairs re-checked in the rebuilt environment gave the same outcome hash, and the diverging \
+build outputs are described in the divergence note."""
+rebuild_failed = """**Environment rebuild.** Every from-scratch rebuild attempt failed, so this snapshot publishes the \
+recipe plus the artifact manifest, with the divergence recorded, and exact reproducibility of the environment moves to \
+a later phase."""
+outside = """**Outside checks.** On its scheduled dates the project searched for any independent audit or \
+reproduction of this dataset and re-read the neutral registry Palomar's stated policy; each result is recorded in \
+`gates/GATES.md`:
+
+{checks}"""
+env_reports = """**Environment axiom reports.** These pairs reach an axiom outside the allowlist only through \
+imported constants; each is reported against the environment, not against the entry's author, and counted \
+`reproduced`:
+
+{reports}"""
+membership = """The whole-environment aggregate held {members} members, listed in `results/membership.txt` (hash \
+`{membership_hash}`)."""
+replay = " Its `leanchecker --fresh` replay took {replay_hours} hours."
+whole_frame = " The drawable pair frame is smaller than the sample size, so the whole frame was checked."
+trial = ", or the reason none can"
+with_legacy = """ A pair whose class needs the declared revision takes `--with-legacy`, which builds that environment too: \
+{legacy_cost}."""
+example = """For example, this pair's class is decided at the pin alone:
+
+```
+{command} --pair {example}
+```"""

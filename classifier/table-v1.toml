@@ -1,0 +1,29 @@
+# Leg outcome decision table. A leg's stages are read in pipeline order (assemble, compile, replay, audit);
+# within a stage the rows are tried in order and the first whose env, condition and pattern all match gives
+# the outcome. A pattern is a Python regular expression searched, multi-line, over the stage's output.
+version = "v1"
+row = [
+  { id = "any.refusal", env = "any", stage = "assemble", when = "refusal!=null", outcome = "harness" },
+  { id = "any.path_residue", env = "any", stage = "assemble", when = "path_residue", outcome = "harness" },
+  { id = "any.output_missing", env = "any", stage = "compile", when = "output_missing", outcome = "harness" },
+  { id = "any.oom", env = "any", stage = "compile", when = "oom_kill>0", outcome = "oom" },
+  { id = "any.wallclock", env = "any", stage = "compile", when = "killed==wall-clock", outcome = "timeout-wall-clock" },
+  { id = "pin.heartbeats", env = "pin", stage = "compile", when = "exit!=0", pattern = '\(deterministic\) timeout|maximum number of heartbeats', outcome = "timeout-heartbeats" },
+  { id = "legacy.heartbeats", env = "legacy", stage = "compile", when = "exit!=0", pattern = '\(deterministic\) timeout|maximum number of heartbeats', outcome = "timeout-heartbeats" },
+  { id = "any.stack", env = "any", stage = "compile", when = "exit!=0", pattern = '[Ss]tack overflow|maximum recursion depth has been reached', outcome = "stack" },
+  { id = "any.kernel", env = "any", stage = "compile", when = "exit!=0", pattern = '^[^\n]*error[^\n]*\(kernel\)', outcome = "kernel-reject" },
+  { id = "pin.error", env = "pin", stage = "compile", when = "exit!=0", pattern = ':\d+:\d+: error(\([a-zA-Z.]+\))?: ', outcome = "elab-error" },
+  { id = "legacy.error", env = "legacy", stage = "compile", when = "exit!=0", pattern = ':\d+:\d+: error: ', outcome = "elab-error" },
+  { id = "pin.replay.oom", env = "pin", stage = "replay", when = "oom_kill>0", outcome = "oom" },
+  { id = "pin.replay.wallclock", env = "pin", stage = "replay", when = "killed==wall-clock", outcome = "timeout-wall-clock" },
+  { id = "pin.replay.reject", env = "pin", stage = "replay", when = "exit!=0 and rejected_constant!=null", outcome = "replay-reject" },
+  { id = "pin.replay.harness", env = "pin", stage = "replay", when = "exit!=0", outcome = "harness" },
+  { id = "any.audit.oom", env = "any", stage = "audit", when = "oom_kill>0", outcome = "oom" },
+  { id = "any.audit.wallclock", env = "any", stage = "audit", when = "killed==wall-clock", outcome = "timeout-wall-clock" },
+  { id = "any.audit.harness", env = "any", stage = "audit", when = "exit!=0", outcome = "harness" },
+  { id = "any.audit.decls", env = "any", stage = "audit", when = "audit.other_decls", outcome = "harness" },
+  { id = "any.audit.own", env = "any", stage = "audit", when = "audit.own_bad", outcome = "audit-failure" },
+  { id = "any.audit.env", env = "any", stage = "audit", when = "audit.env_bad", outcome = "accepted-env-axiom" },
+  { id = "any.accepted", env = "any", stage = "audit", when = "exit==0", outcome = "accepted" },
+  { id = "any.unmatched", env = "any", stage = "compile", when = "exit!=0", outcome = "unclassified" },
+]

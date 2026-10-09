@@ -1,0 +1,8 @@
+# SYNTHETIC: statements the pinned release lacks (0 `lemma`, 0 names with `__`, `/` or NUL, 0 without a declaration or the suffix, 0 with a `--` comment before the suffix); refusal-only, never a positive outcome. One JSON string per line.
+"lemma a__b(x : ℕ) : True := by sorry"
+"mytheorem x theorem c__d: True := by sorry"
+"example : True := by sorry"
+"theorem foo : True := by simp"
+"theorem a/b : True := by sorry"
+"theorem a\u0000b : True := by sorry"
+"theorem foo : True -- a note\n  := by sorry"

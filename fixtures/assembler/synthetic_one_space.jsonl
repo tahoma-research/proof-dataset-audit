@@ -1,0 +1,2 @@
+# SYNTHETIC: the statement of the record at position 146 with its `:=  by sorry` narrowed to one space, a spacing no statement of the pinned release has. One JSON string.
+"theorem lean_workbook_146 : ∀ x : ℝ, cos (3 * x) = cos (2 * x + x)  := by sorry"

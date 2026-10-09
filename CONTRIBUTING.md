@@ -1,0 +1,34 @@
+# Contributing to Proof Dataset Audit
+
+This project exists so that its results can be checked, and a careful reader is its most useful
+contributor.
+
+## What is welcome
+
+- **A disagreement with a recorded result.** Open an issue naming the record (its pair digest),
+  the command you ran and what you saw. The pipeline's commands reproduce a single pair end to
+  end, so a report that includes the output can be settled by running it.
+- **An independent reproduction**, agreeing or not. Open an issue with the commit you used and
+  your result. Outside reproductions are recorded in the gate file.
+- **A defect in the code, the tests or the documentation.** Open an issue, or a pull request with
+  a test that fails before the change and passes after it.
+- **A request that a record be withdrawn.** Open an issue stating the ground. A withdrawal marks
+  the affected records and excludes them from every published rate; nothing is deleted from
+  history.
+
+## What is not accepted
+
+- A change to recorded results, to the published constants, to the frozen classifier table or to
+  the gate file. These change only through the pipeline's own commands, each recorded in the gate
+  file. A pull request that edits them is closed with a pointer to the command.
+- A change that puts a model, or any network access beyond the documented fetch steps, inside
+  the verification path.
+
+## Before you open an issue or a pull request
+
+- Keep personal data out of both: yours and anyone else's. Issues are public and permanent.
+- By submitting a contribution you license it under the Apache License 2.0 (`LICENSE`), as
+  Section 5 of that license provides.
+- Responses are best-effort; no response time is promised.
+
+See `RULES.md` for how this repository's history is changed and by whom.

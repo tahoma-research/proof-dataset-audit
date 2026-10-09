@@ -1,0 +1,19 @@
+[project]
+name = "ledger"
+version = "0.1.0"
+description = "Independent re-verification of a formal-proof corpus in a pinned environment"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest==9.0.2", "jsonschema==4.26.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+addopts = "--import-mode=importlib"
+markers = [
+    "integration: needs the development environment named by LEDGER_DEV_ROOT",
+    "slow: runs over 60 seconds",
+    "assembler: the declaration-name and assembly rules, checked at the D+7 probe",
+]

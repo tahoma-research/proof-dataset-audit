@@ -1,0 +1,51 @@
+schema = "constants/1"
+public_name = "Proof Dataset Audit"  # set at staging; `stage` and `publish` refuse while empty
+publisher = "Tahoma Research"  # the publishing organisation, author of record (CITATION.cff, README); set at staging; same refusal
+
+[assembly]                       # the published assembly rule
+header = "import Mathlib\nimport Aesop\nset_option maxHeartbeats 400000\nopen BigOperators Real Nat Topology Rat\n"
+max_heartbeats = 400000
+suffix_regex = ':=\s+by\s+sorry\s*$'  # matched against the verbatim statement, never after whitespace normalisation
+name_mangle = "{decl}__p{k}"
+
+[sampling]
+seed = 0                         # the published integer seed; chosen and committed before the sample draw
+sample_size = 1000
+max_pairs_per_entry = 2
+prng = "cpython random.Random (MT19937)"
+python = "3.12.3"
+cut_n = 0                        # mutable: 0 = no cut; set once by the single re-scope
+
+[limits]
+per_pair_wall_clock_s = 1800     # mutable once: provisional 30 min until the D+21 freeze
+per_pair_limit_status = "provisional"   # → "frozen"; `rule` records which rule set it
+per_pair_limit_rule = ""
+run_ceiling_s = 50400            # 14 h
+replay_cap_s = 43200             # mutable once: 12 h cap, or the D+14 outcome's cap
+replay_cap_rule = "default"      # "default" | "reset" | "rescope" | "max(12h,1.5P)"
+attempt_bound = 3
+memory_floor_gib = 8
+swap_floor_gib = 4
+replay_memory_floor_mib = 0      # mutable once (d14-outcome): pilot replay peak × 1.25; the D+44 run's MemoryMax; 0 = unset
+leg_memory_max_mb = 12288        # mutable once (d14-outcome): 1.5 × the pilot's max leg peak
+agg_memory_max_mb = 24576        # mutable once (d14-outcome): 1.5 × the larger of the pilot aggregate's build and audit peaks
+
+[budgets]                        # storage budgets in GB, published
+durable_gb = 5
+pin_env_gb = 300
+legacy_env_gb = 120
+rebuild_gb = 300
+
+[audit]
+allowlist = ["Classical.choice", "Quot.sound", "propext"]
+
+[classifier]
+version = "v1"
+table = "classifier/table-v1.toml"
+table_sha256 = ""                # set at the D+21 freeze
+status = "draft"                 # → "frozen"; re-frozen at most once
+
+[status]                         # mutable, each by its gate
+legacy = "pending"               # "standing" | "environment-unavailable"
+independent_check = "pending"    # "available" | "replay-unavailable"
+stop_loss = false                # true switches the whole document to the cache-seeded recipe

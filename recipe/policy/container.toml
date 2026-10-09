@@ -1,0 +1,9 @@
+# The policy a run names inside a container: every tree it writes lies in the working directory, and it carries
+# no rule of the host the container runs on. The container itself is the isolation.
+schema = "policy/1"
+kind = "container"
+root = "."
+confinement = "none"
+disk_floor_gb = 200   # a running step stops once free space in the working directory falls below this
+disk_need_gb = 300    # the free space a run needs above disk_floor_gb at its start, so disk_floor_gb + disk_need_gb
+                      # in all; provisional until the first measured build

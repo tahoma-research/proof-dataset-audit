@@ -1,0 +1,6 @@
+name = "toy"
+defaultTargets = ["Toy"]
+
+[[lean_lib]]
+name = "Toy"
+roots = ["Toy.Entry"]

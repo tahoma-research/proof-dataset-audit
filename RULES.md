@@ -1,0 +1,38 @@
+# Proof Dataset Audit: project rules
+
+These rules govern how this repository's history is changed and by whom. They are short on
+purpose.
+
+## The default: nothing is pushed
+
+The pipeline's commands commit locally and never push. Checking runs on a timer; publishing does
+not. No unit, job or agent holds a standing permission to push, and a permission baked into a
+unit file is refused.
+
+## The push exception
+
+One command publishes: it commits the staged tree, tags it and pushes. It is the only push this
+project makes.
+
+- **Scope.** This repository and its one remote, and nothing else: no other repository, no other
+  remote, no mirror. Only the operator pushes to it, for the pin, the pre-release, the release and
+  every later forward commit.
+- **Who may invoke it.** The operator, and only the operator. The operator is a role, never a
+  named person. It acts on a command it is watching, after reading the staged summary, and the
+  command refuses to run without an explicit operator flag and an interactive terminal. An agent
+  or a unit working the pipeline stages and never publishes.
+
+Unattended publication does not exist in this phase. It may be added only with a permission that
+is narrow (this repository and remote only), auditable (every invocation logged with what was
+pushed and by which unit) and revocable without editing a unit file; until it exists, nothing
+publishes unattended.
+
+## No rewriting of history
+
+- No force-push, on any branch, ever.
+- No published tag is moved, re-pointed or deleted. A tag names one commit for good, so a
+  citation of it cannot be silently re-aimed.
+- No published commit is amended, rebased or squashed.
+
+A correction, and the answer to a takedown demand, is a forward commit that marks the affected
+records and says why. Nothing is deleted from history.

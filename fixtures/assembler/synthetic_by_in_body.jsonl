@@ -1,0 +1,2 @@
+# SYNTHETIC: a statement whose body carries `:= by` and a newline (an auto-param binder), so that a reader of the text who split at the first `:= by` would find the binder's tactic, not the proof; no statement body of the pinned release carries one. One JSON string.
+"theorem synthetic_by_in_body (h : 1 = 1 := by\n    rfl) : True  :=  by sorry"

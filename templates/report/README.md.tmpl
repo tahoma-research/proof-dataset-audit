@@ -1,0 +1,132 @@
+# {public_name}
+
+{lead} {verified} To check any result yourself, follow [Reproduce one pair](#reproduce-one-pair); it first costs
+{build_kind}, {build_figure}, before a single pair is checked.
+
+{headline}
+
+{stop_loss}
+
+{divergent}
+
+{rebuild_failed}
+
+{outside}
+
+## Results
+
+Every sampled pair by class. Withdrawn records ({withdrawn}) stay resolvable at the snapshot that published them and
+are left out of every count, rate and set below.
+
+{class_table}
+
+{skew}
+
+{rates}
+
+{shortlist}
+
+{env_reports}
+
+Pairs on which the axiom collector and the independent walk disagreed: {disagreements}. The audit takes the union of
+both, which can only add failures. {membership}{replay}
+
+Each pair that did not reproduce is listed by class in [`results/FINDING_REPORT.md`](results/FINDING_REPORT.md), with
+the command that reproduces it{trial}.
+
+## What was checked, and how
+
+Each sampled pair is one statement of the dataset with one of its proofs, assembled into its own Lean module by the
+published rule in `recipe/constants.toml`. At the pin, `{pin_lean}` with Mathlib `{pin_mathlib}` (commit
+`{pin_commit}`, {pin_arch}), every pair is compiled as its own module, replayed by `leanchecker`, and audited
+declaration by declaration: an axiom outside the allowlist in `recipe/constants.toml`, or a dependence on `sorryAx`, is
+a failure in its own class. {aggregate} Each pair's class comes from a fixed, published decision
+table in `classifier/`, never from judgement, and every record carries the raw diagnostics the table read, so anyone
+can apply the table again with `PYTHONPATH=src python3 -m ledger report --policy recipe/policy/container.toml
+--from-records results/records.jsonl`.
+
+{declared}
+
+On the project's host the build step can open no socket of any kind: sources and dependency packages are fetched in a
+separate step before it, so a download is prevented rather than detected. Every fetch the pipeline makes is TCP, and a
+local service that could fetch on the step's behalf (the user's D-Bus, a container daemon) is reachable only over a
+Unix socket. Only the separate fetch steps reach the network, over TCP. Inside a reproduction container the same holds:
+the build step can open no socket of any kind and, as on the host, writes only beneath its own directories, save that
+on a kernel whose Landlock does not mediate truncation it can truncate a file outside them, which can break a run but
+never reach the network; the container stands in for the host's confinement of what it reads.
+
+### Why compile success is not verification
+
+{evidence}
+
+### Source, frame and draw
+
+The source is the Lean Workbook dataset, `{repo}` at revision `{revision}`, file `{file}` ({bytes} bytes, hash
+`{sha256}`); the record unit is the {record_unit}. Its licence, as the dataset card declares it ({licence_status}), is
+{licence}, traced on {licence_traced} at {licence_url}: "{licence_verbatim}". The card states {card} records with the
+`split` value `lean_workbook`, against {counted} counted in the file; the counted `split` values ({split_values}) sum to
+the file's {records_total} records, and the counted figures are the ones used throughout.
+
+{proof_bearing} records carry a proof; the {proofless} that carry none are excluded and enter no count. Exact-string
+dedupe within entries removed {within} of {elements} proof elements; dedupe of normalised statements across entries
+removed {cross} entries, leaving {eligible} eligible entries and a drawable frame of {drawable} pairs ({drawable_before}
+before that dedupe). An entry carries {mean} proofs on average (median {median}, at most {max}, at `{max_entry}`). The
+draw is Python's `random.Random` with seed {seed}, at most {per_entry} pairs per entry: {pairs} pairs from
+{distinct_entries} distinct entries.{whole_frame}
+
+### Limits, stated plainly
+
+- This snapshot does not screen for statement faithfulness, a different defect class, invisible to re-execution by
+  construction: "reproduced" means the proof checks, not that the statement says what its author intended.
+- Reproducibility is not soundness. A bug in the pinned kernel would produce the same false result on every run;
+  cross-checking against an independently implemented kernel is the hardening step, and it is not part of this
+  snapshot.
+- The method gives the whole-environment replay a cap of {replay_cap_hours} hours of wall-clock. The cap is a schedule
+  budget, not a prediction of how long the replay takes.
+- A member of the aggregate can print forged `error:` lines and so make honest members appear to fail there, which
+  records them as `harness-error`. That moves pairs only into a class excluded from both rates; it never manufactures
+  a statement about the mathematics, and the member doing it is removed by its own real failure.
+- One malicious member of the corpus can force an aggregate failure that no rule attributes to a pair. That uses up
+  the one cut of the sample to a smaller size that the method allows, and then ends the audit without a result: a risk
+  to finishing, never a false verification.
+- The OCI image, where `results/index.json` lists one, is a convenience and not evidence: it holds the base image
+  that `recipe/stranger.sh` starts from, with the packages it installs. The environment is identified by the content
+  hash of its recipe (`recipe/ids.txt`), which anyone can read and rebuild.
+- The clean-room reproduction recorded under `proofs/` was run by the project on its own host, by an agent that did not
+  build the pipeline. It is not a third-party reproduction.
+
+### The upstream notice
+
+The dataset's authors are sent this finding before it is published, with a response window of {window} days. The
+notice is a courtesy, not a request for consent: the method audits a published corpus without its authors' approval.
+Their response is published beside the finding, under `responses/`, whenever it arrives.
+
+## Reproduce one pair
+
+Reproducing even one pair first costs {build_kind}, {build_figure}. You need an {pin_arch} machine with git, rootless
+podman and slirp4netns, network access, cgroup v2, a Linux kernel with Landlock enabled and {memory_mib} MiB of
+memory for the container, which runs with that limit and no swap, and {disk_gb} GB of free disk.
+
+From the root of a clone of this repository, `{command} --pair <pair_id>`, with a pair's `pair_id` in place of
+`<pair_id>`, starts a container from the public base image that `recipe/stranger.sh` pins by digest. Inside it, the
+procedure installs the pinned toolchain, clones this snapshot's tag, the latest tag of your clone, from the repository
+you cloned, builds the environment from `recipe/`, fetches the dataset at the pinned revision, redraws the published sample, assembles and
+checks the pair, and prints its `pair_sha256` and class, which must equal its line in `results/records.jsonl`.{with_legacy}
+
+{example}
+
+Any reader is invited to reproduce any one pair with this published command; an outside reproduction is logged in
+`gates/GATES.md` with its date and link.
+
+## The snapshot in figures
+
+{figures}
+
+The same figures, machine-readable, are in `results/summary.json`; every record is in `results/records.jsonl`, and
+`results/index.json` gives the hash of each published file.
+
+## If development stops
+
+This snapshot stays as it is. It is immutable, self-contained and needs nothing running: no service, no chain to
+extend, no key to rotate, no scheduled job whose failure would matter. What remains is a finding someone can still
+check.

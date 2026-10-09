@@ -1,0 +1,5 @@
+# A convenience image, and not evidence: the base image stranger.sh starts from, with the packages it installs.
+# No published result comes from it; the content hash of the recipe identifies the environment.
+FROM docker.io/library/python@sha256:fd3817f3a855f6c2ada16ac9468e5ee93e361005bd226fd5a5ee1a504e038c84
+RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+    ca-certificates curl git time

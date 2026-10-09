@@ -1,0 +1,11 @@
+name = "audit"
+defaultTargets = ["audit"]
+
+[[lean_lib]]
+name = "Audit"
+
+[[lean_exe]]
+name = "audit"
+root = "Main"
+exeName = "ledger-audit"
+supportInterpreter = true
