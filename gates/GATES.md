@@ -45,3 +45,4 @@ the ask does.
 | 2026-10-09 | prd-approved | recorded | operator | PRD v18 approved |
 | 2026-10-09 | d-0-name | met | operator | public name Proof Dataset Audit; publisher Tahoma Research; organisation reserved 2026-10-02; name decided 2026-10-03 |
 | 2026-10-09 | d-0-research | proceed | assistant | Q-254 answered 2026-09-22: proceed; reshape is framing only and is satisfied by v10; scope unchanged |
+| 2026-10-09 | budget-check | pass | assistant | window=D+0 to D+7; build_sessions=0; desk_sessions=1; no planned host outage D+0 to D+60 |
